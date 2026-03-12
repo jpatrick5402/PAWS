@@ -2,5 +2,4 @@
 An automatic food and water dispenser for your pets
 
 CAD model
-https://cad.onshape.com/documents/8847f052ac5fc60cbf32310d/w/a37c440e3e7a10d5f2d3157c/e/9deae8718a5087ae6d6d57ce
-
+https://cad.onshape.com/documents/751639f0df2c15b009c32b56/w/386ccf94745a76849924838b/e/5397b3d58e4852829041e07a
