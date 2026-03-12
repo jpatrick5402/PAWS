@@ -4,7 +4,6 @@
 #include <NTPClient.h>
 #include <WiFiUdp.h>
 #include <ESP_Mail_Client.h>
-#include <Stepper.h>
 #include <HX711.h>
 
 #include <time_convert.h>
@@ -22,10 +21,7 @@
 #define EMAIL_SMTP_HOST "YOUR.EMAIL.PROVIDERS.SMTP.HOST"
 
 // Pin definitions
-#define STP_1 15
-#define STP_2 2
-#define STP_3 4
-#define STP_4 16
+#define AUGER_PIN 15
 #define PUMP_PIN 23
 #define WATER_SCALE_SCK 5
 #define WATER_SCALE_DOUT 18
@@ -43,13 +39,10 @@
 #define WATER_THRESHOLD_G 160
 
 // how much food/water to give per cycle
-#define FOOD_PRECISION 512 // stepper motor steps
+#define FOOD_PRECISION 5000 // ms of auger moving 
 #define WATER_PRECISION 5000 // ms of water delivery
 // too many cycles = out of food/water 
 #define CYCLE_LIMIT 30
-
-
-Stepper stepper(2048, STP_1, STP_2, STP_3, STP_4); // stepper step count & pins
 
 HX711 water_scale;
 HX711 food_scale;
@@ -78,9 +71,9 @@ void setup() {
   timeClient.begin();
   timeClient.update();
 
-  stepper.setSpeed(10);
-
   pinMode(PUMP_PIN, OUTPUT);
+
+  pinMode(AUGER_PIN, OUTPUT);
 
   water_scale.begin(WATER_SCALE_DOUT, WATER_SCALE_SCK);
   food_scale.begin(FOOD_SCALE_DOUT, FOOD_SCALE_SCK);
@@ -110,19 +103,25 @@ void send_email(String body) {
 
 void loop() {
   String times[2] = {"07:00", "18:00"}; // times to output provisions
+  if (is_DST(timeClient.getEpochTime())) { timeClient.setTimeOffset(-14400); }
+  else { timeClient.setTimeOffset(-18000); }
   String time = timeClient.getFormattedTime().substring(0,5);
-  delay(1000);
+  //test_loop(timeClient, food_scale, water_scale, AUGER_PIN, PUMP_PIN);
+  delay(5000);
+  Serial.println(time);
   for (String t : times) { // loop through times and check if any of them are now
     if (t == time) {
       // add food until full
       int counter = 0; // counter if food runs out
       while (food_scale.get_units(10) < FOOD_THRESHOLD_G && counter < CYCLE_LIMIT) {
-        stepper.step(FOOD_PRECISION);
+        digitalWrite(AUGER_PIN, HIGH);
+        delay(FOOD_PRECISION);
+        digitalWrite(AUGER_PIN, LOW);
         counter++;
       }
 
       // send email if refill needed
-      if (!counter < CYCLE_LIMIT) send_email("Food Container is empty, please refill ASAP");
+      if (! counter < CYCLE_LIMIT) send_email("Food Container is empty, please refill ASAP");
 
       // add water until full
       counter = 0; // reset counter
@@ -134,13 +133,10 @@ void loop() {
       }
 
       // send email if refill needed
-      if (!counter < CYCLE_LIMIT) send_email("Water Container is empty, please refill ASAP");
+      if (! counter < CYCLE_LIMIT) send_email("Water Container is empty, please refill ASAP");
 
       delay(60000); // wait for the minute to be over so it doesn't re-trigger
       timeClient.update(); // update to current time via NTP
-
-      if (is_DST(timeClient.getEpochTime())) timeClient.setOffset(-14400);
-      else timeClient.setOffset(-18000);
     }
   }
 }
