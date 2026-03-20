@@ -9,24 +9,17 @@
 #include <time_convert.h>
 #include <test.h>
 
-#define WIFI_SSID "Your Wi-Fi Name"
-#define WIFI_PASSWORD "Your Wi-Fi Password"
+#include <credentials.h>
 
-#define EMAIL_FROM "Your email"
-#define EMAIL_TO "Your email or elsewhere"
-#define EMAIL_TO_2 "Anyone you want to CC"
-#define EMAIL_PASSWORD "Your email application password"
-// https://support.google.com/accounts/answer/185833?hl=en
-#define EMAIL_SMTP_PORT YOUR_EMAIL_PROVIDERS_SMTP_PORT
-#define EMAIL_SMTP_HOST "YOUR.EMAIL.PROVIDERS.SMTP.HOST"
+bool test = true;
 
 // Pin definitions
-#define AUGER_PIN 15
-#define PUMP_PIN 23
-#define WATER_SCALE_SCK 5
-#define WATER_SCALE_DOUT 18
-#define FOOD_SCALE_SCK 19
-#define FOOD_SCALE_DOUT 21
+#define AUGER_PIN 12
+#define PUMP_PIN 13
+#define WATER_SCALE_SCK 26
+#define WATER_SCALE_DOUT 25
+#define FOOD_SCALE_SCK 14
+#define FOOD_SCALE_DOUT 27
 
 // see calibrate() to get DIVIDER and OFFSET
 #define FOOD_SCALE_OFFSET -368175
@@ -106,7 +99,7 @@ void loop() {
   if (is_DST(timeClient.getEpochTime())) { timeClient.setTimeOffset(-14400); }
   else { timeClient.setTimeOffset(-18000); }
   String time = timeClient.getFormattedTime().substring(0,5);
-  //test_loop(timeClient, food_scale, water_scale, AUGER_PIN, PUMP_PIN);
+  if (test) test_loop(timeClient, food_scale, water_scale, AUGER_PIN, PUMP_PIN);
   delay(5000);
   Serial.println(time);
   for (String t : times) { // loop through times and check if any of them are now

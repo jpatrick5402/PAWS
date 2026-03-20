@@ -2,14 +2,18 @@ param(
   [Parameter(Mandatory=$true)][string]$COMPort
 )
 
-Write-Host -ForegroundColor Green "Compile: started"
+$ErrorActionPreference = 'Stop'
+
+Write-Host -ForegroundColor Green "-------------------------------------- Compile: started ---------------------------------------------------"
 Start-Sleep -Milliseconds 300
-arduino-cli.exe compile -v --fqbn esp32:esp32:esp32 main.ino
-Write-Host -ForegroundColor Green "Compile: completed"
-Write-Host -ForegroundColor Green "Upload: started"
+arduino-cli.exe compile -v --fqbn esp32:esp32:esp32 main.ino --build-properties build.partitions=huge_app,upload.maximum_size=3145728 -v
+if ($LASTEXITCODE -ne 0) {throw "Error Compiling"}
+Write-Host -ForegroundColor Green "-------------------------------------- Compile: completed ---------------------------------------------------"
+Write-Host -ForegroundColor Green "-------------------------------------- Upload: started ---------------------------------------------------"
 Start-Sleep -Milliseconds 300
 arduino-cli.exe upload --fqbn esp32:esp32:esp32 -p $COMPort main.ino
-Write-Host -ForegroundColor Green "Upload: completed"
+if ($LASTEXITCODE -ne 0) {throw "Error Uploading"}
+Write-Host -ForegroundColor Green "-------------------------------------- Upload: completed ---------------------------------------------------"
 
 $port = New-Object System.IO.Ports.SerialPort $COMPort, 115200, None, 8, one
 $port.Open()
