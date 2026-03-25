@@ -3,8 +3,8 @@
 void test_loop(NTPClient timeClient, HX711 food_scale, HX711 water_scale, int AUGER_PIN, int PUMP_PIN) {
   // comment out any lines you don't want to test
   while (true) {
-  if (is_DST(timeClient.getEpochTime())) { timeClient.setTimeOffset(-14400); }
-  else { timeClient.setTimeOffset(-18000); }
+    if (is_DST(timeClient.getEpochTime())) { timeClient.setTimeOffset(-14400); }
+    else { timeClient.setTimeOffset(-18000); }
 
     Serial.println(timeClient.getFormattedTime());
 
