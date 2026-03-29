@@ -31,11 +31,11 @@ bool production = true;
 
 // amount of food and water until full
 #define FOOD_THRESHOLD_G 50
-#define WATER_THRESHOLD_G 100
+#define WATER_THRESHOLD_G 200
 
 // how much food/water to give per cycle
 #define FOOD_PRECISION 250 // ms of auger moving 
-#define WATER_PRECISION 7000 // ms of water delivery
+#define WATER_PRECISION 9000 // ms of water delivery
 // too many cycles = out of food/water 
 #define CYCLE_LIMIT 15
 
