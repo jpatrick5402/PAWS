@@ -1,4 +1,4 @@
-# APPS-Automated-Pet-Provisioning-System
+# PAWS - Pet Automated Water & Sustenance
 An automatic food and water dispenser for your pets
 
 CAD model
