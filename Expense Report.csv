@@ -1,20 +1,20 @@
-Type,Description,Actual,Estimated Cost
-Material,Wood,$0.00,$40.00
-Material,Hinges,$1.43,$1.43
-Material,Bolts,$0.08,$0.08
-Material,Wire,$1.60,$1.60
-Material,Peristaltic Pump,$9.00,$9.00
-Material,Stepper Motor,$0.00,$2.80
-Material,PCB,$0.25,$0.25
-Material,Solder,$3.00,$3.00
-Material,ESP32,$9.00,$9.00
-Material,Scales,$8.00,$8.00
-Material,Tubing,$7.00,$7.00
-Material,Tube connection,$2.40,$2.40
-Material,Tube glue,$0.28,$0.28
-Material,Bottles,$6.00,$6.00
-Material,3D printed Auger,$0.00,$1.63
-,,,
-,,,
-,,,
+Description,Actual,Estimated Cost
+Wood,$0.00,$40.00
+Hinges,$1.43,$1.43
+Bolts,$0.08,$0.08
+Wire,$1.60,$1.60
+Peristaltic Pump,$9.00,$9.00
+DC Motor,$8.00,$8.00
+PCB,$0.25,$0.25
+Solder,$3.00,$3.00
+ESP32,$9.00,$9.00
+Scales,$8.00,$8.00
+Tubing,$7.00,$7.00
+Tube connection,$2.40,$2.40
+Tube glue,$0.28,$0.28
+Bottles,$6.00,$6.00
+3D printed Auger,$0.00,$1.63
+,,
+,,
+,,
 ,Total,48.043333333,92.473333333
